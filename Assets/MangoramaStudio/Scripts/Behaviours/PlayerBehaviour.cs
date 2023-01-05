@@ -4,33 +4,34 @@ using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    public int PlayerCount => _playerCount;
+    public float PlayerCount => _playerCount;
+    public float PlayerBarFactor => _playerBarFactor;
 
     [SerializeField] private float _speed;
+    [SerializeField] private DoorBehaviour _doorBehaviour;
+    [SerializeField] private GameObject _playerPrefab;
 
-    private int _playerCount = 1;
+    private float _playerCount = 1;
     private float _playerBarFactor;
     private Vector3 _firstPosition;
     private Vector3 _secondPosition;
-    private DoorBehaviour _doorBehaviour;
-    private GameManager _gameManager;
-    private bool _playerCountChanged;
+    //private bool _playerCountChanged;
 
     private void Start()
     {
-        _doorBehaviour.IsPlayerPassAGate += PlayerIsPassAGate;
+        //_doorBehaviour.IsPlayerPassAGate += PlayerIsPassAGate;
     }
 
     private void OnDestroy()
     {
-        _doorBehaviour.IsPlayerPassAGate -= PlayerIsPassAGate;
+        //_doorBehaviour.IsPlayerPassAGate -= PlayerIsPassAGate;
     }
 
-    private void PlayerIsPassAGate(int playerCount)
+    public void PlayerIsPassAGate(float playerCount)
     {
         _playerCount = playerCount;
         Debug.Log("playerCount is: " + _playerCount);
-        _playerCountChanged = true;
+        PopulatePlayer();
     }
 
 
@@ -53,12 +54,23 @@ public class PlayerBehaviour : MonoBehaviour
             PlayerSwipeAtClampedAreaProcess();
         }
 
-        if (_playerCountChanged == true)
-        {
-            //Instantiate
-            _playerCountChanged = false;
-        }
+        //if (_playerCountChanged == true)
+        //{
+        //    PopulatePlayer();
+        //}
 
+    }
+
+    private void PopulatePlayer()
+    {
+        Vector3[] spawnPositions = new[] { new Vector3(0, 0, 1), new Vector3(1, 0, 1), new Vector3(1, 0, 0), new Vector3(1, 0, -1), new Vector3(0, 0, -1), new Vector3(-1, 0, -1), new Vector3(-1, 0, 0), new Vector3(-1, 0, 1) };
+
+        for (int i = 0; i < _playerCount; i++)
+        {
+            GameObject player = Instantiate(_playerPrefab, transform.position + spawnPositions[i], Quaternion.identity);
+            player.transform.parent = gameObject.transform;
+            //_playerCountChanged = false;
+        }
     }
 
     private void PlayerSwipeAtClampedAreaProcess()
