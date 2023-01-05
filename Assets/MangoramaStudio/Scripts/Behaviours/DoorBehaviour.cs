@@ -14,7 +14,7 @@ public enum Operations
 public class DoorBehaviour : MonoBehaviour
 {
     public Operations _operations;
-    public event Action<int> IsPlayerPassAGate; 
+    //public event Action<float> IsPlayerPassAGate; 
     [SerializeField] private int _operationFactor;
     private PlayerBehaviour _playerBehaviour;
     private bool _playerPassedDoor;
@@ -28,17 +28,18 @@ public class DoorBehaviour : MonoBehaviour
             switch (_operations)
             {
                 case Operations.Plus:
-                    IsPlayerPassAGate?.Invoke(_playerBehaviour.PlayerCount + _operationFactor);
+                    //IsPlayerPassAGate?.Invoke(_playerBehaviour.PlayerCount + _operationFactor);
                     break;
                 case Operations.Minus:
-                    IsPlayerPassAGate?.Invoke(_playerBehaviour.PlayerCount - _operationFactor);
+                    //IsPlayerPassAGate?.Invoke(_playerBehaviour.PlayerCount - _operationFactor);
                     break;
                 case Operations.Divided:
-                    IsPlayerPassAGate?.Invoke(_playerBehaviour.PlayerCount / _operationFactor);
+                    //IsPlayerPassAGate?.Invoke(_playerBehaviour.PlayerCount / _operationFactor);
                     break;
                 case Operations.Multiply:
                     Debug.Log(_playerBehaviour.PlayerCount * _operationFactor);
-                    IsPlayerPassAGate?.Invoke(_playerBehaviour.PlayerCount * _operationFactor);
+                    _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCount * _operationFactor);
+                    //IsPlayerPassAGate?.Invoke(_playerBehaviour.PlayerCount * _operationFactor);
                     break;
             }
         }
