@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerCountBar : MonoBehaviour
 {
     [SerializeField] private Image _playercountBarImage;
-    [SerializeField] private PlayerBehaviour _playerBehaviour;
+    [SerializeField] private PlayerParentBehaviour _playerBehaviour;
 
     private void Update()
     {

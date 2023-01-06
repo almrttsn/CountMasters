@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerCountPanel : MonoBehaviour
 {
     [SerializeField] private Text _playerCountText;
-    [SerializeField] private PlayerBehaviour _playerBehaviour;
+    [SerializeField] private PlayerParentBehaviour _playerBehaviour;
 
     
     private void Update()
