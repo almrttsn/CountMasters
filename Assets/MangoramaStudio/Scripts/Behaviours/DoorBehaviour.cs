@@ -16,14 +16,15 @@ public class DoorBehaviour : MonoBehaviour
     public Operations _operations;
     //public event Action<float> IsPlayerPassAGate; 
     [SerializeField] private int _operationFactor;
-    private PlayerBehaviour _playerBehaviour;
+    private PlayerParentBehaviour _playerBehaviour;
     private bool _playerPassedDoor;
 
     private void OnTriggerEnter(Collider other)
     {
+        
         if(other.tag == "Player")
         {
-            _playerBehaviour = other.GetComponent<PlayerBehaviour>();
+            _playerBehaviour = other.GetComponent<PlayerParentBehaviour>();
 
             switch (_operations)
             {
