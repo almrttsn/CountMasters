@@ -42,13 +42,13 @@ public class LevelManager : BaseManager
 
         InputController.IsInputDeactivated = false;
 
-        var currentLevelIndex = PlayerData.CurrentLevelId - 1;
+        //var currentLevelIndex = PlayerData.CurrentLevelId - 1;
 
-        currentLevelIndex = currentLevelIndex % _levelBehaviours.Count;
+        //currentLevelIndex = currentLevelIndex % _levelBehaviours.Count;
 
-        _currentLevel = Instantiate(_levelBehaviours[currentLevelIndex]);
+        //_currentLevel = Instantiate(_levelBehaviours[currentLevelIndex]);
 
-        _currentLevel.Initialize(GameManager);
+        //_currentLevel.Initialize(GameManager);
     }
 
     private void ClearLevel()
