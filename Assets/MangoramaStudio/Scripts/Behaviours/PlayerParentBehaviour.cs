@@ -5,25 +5,29 @@ using UnityEngine;
 
 public class PlayerParentBehaviour : MonoBehaviour
 {
-    public float PlayerCount => _playerCount;
+    public int PlayerCount => _playerCount;
     public float PlayerBarFactor => _playerBarFactor;
 
     [SerializeField] private float _speed;
     //[SerializeField] private DoorBehaviour _doorBehaviour;
     [SerializeField] private CharacterBehaviour _characterBehaviourPrefab;
+    [SerializeField] private CharacterBehaviour _firstCharacter;
 
     private List<CharacterBehaviour> _playerList = new List<CharacterBehaviour>();
-    private float _playerCount = 1;
+    private int _playerCount = 1;
     private float _playerBarFactor;
     private float _populateRadius;
     private Vector3 _firstPosition;
     private Vector3 _secondPosition;
     private Vector3 _populateTransform;
+    private int _depopulateAmount;
+
     //private bool _playerCountChanged;
 
     private void Start()
     {
         //_doorBehaviour.IsPlayerPassAGate += PlayerIsPassAGate;
+        _playerList.Add(_firstCharacter);
     }
 
     private void OnDestroy()
@@ -31,11 +35,24 @@ public class PlayerParentBehaviour : MonoBehaviour
         //_doorBehaviour.IsPlayerPassAGate -= PlayerIsPassAGate;
     }
 
-    public void PlayerIsPassAGate(float playerCount)
+    public void PlayerIsPassAGate(int playerCount)
     {
-        _playerCount = playerCount;
-        _populateRadius++;
-        PopulatePlayers(playerCount, _populateTransform, _populateRadius);
+        if (playerCount > _playerCount)
+        {
+            _populateRadius++;
+            PopulatePlayers(playerCount, _populateTransform, _populateRadius);
+        }
+        else if(playerCount < _playerCount)
+        {
+            _depopulateAmount = _playerList.Count - playerCount;
+            Debug.Log(_depopulateAmount);
+            _populateRadius--;
+            DepopulatePlayers(_depopulateAmount);
+        }
+        else
+        {
+            return;
+        }
     }
 
     public void PopulatePlayers(float num, Vector3 point, float radius)
@@ -43,34 +60,36 @@ public class PlayerParentBehaviour : MonoBehaviour
 
         for (int i = 0; i < num; i++)
         {
-
             /* Distance around the circle */
             var radians = 2 * Mathf.PI / num * i;
-
             /* Get the vector direction */
             var vertical = Mathf.Sin(radians);
             var horizontal = Mathf.Cos(radians);
-
             var spawnDir = new Vector3(horizontal, 0, vertical);
-
             /* Get the spawn position */
             var spawnPos = point + spawnDir * radius; // Radius is just the distance away from the point
-
             /* Now spawn */
             var character = Instantiate(_characterBehaviourPrefab) as CharacterBehaviour;
             character.transform.parent = gameObject.transform;
             character.transform.position = transform.position;
             character.MoveChacartersToTerritory(spawnPos);
-
             _playerList.Add(character);
-            
-
             /* Rotate the enemy to face towards player */
             //enemy.transform.LookAt(point);
-
             /* Adjust height */
             //player.transform.Translate(new Vector3(0, player.transform.localScale.y / 2, 0));
         }
+        _playerCount = _playerList.Count;
+    }
+
+    private void DepopulatePlayers(int depopulateAmount)
+    {
+        for (int i = 0; i < depopulateAmount; i++)
+        {
+            Destroy(_playerList[_playerList.Count -1].gameObject);
+            _playerList.RemoveAt(_playerList.Count - 1);
+        }
+        _playerCount = _playerList.Count;
     }
 
 
@@ -144,6 +163,6 @@ public class PlayerParentBehaviour : MonoBehaviour
         transform.position = new Vector3(clampedPos, transform.position.y, transform.position.z);
     }
 
-    
+
 
 }
