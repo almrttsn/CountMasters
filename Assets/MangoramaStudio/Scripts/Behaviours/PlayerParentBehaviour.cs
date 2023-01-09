@@ -9,45 +9,35 @@ public class PlayerParentBehaviour : MonoBehaviour
     public float PlayerBarFactor => _playerBarFactor;
 
     [SerializeField] private float _speed;
-    //[SerializeField] private DoorBehaviour _doorBehaviour;
     [SerializeField] private CharacterBehaviour _characterBehaviourPrefab;
     [SerializeField] private CharacterBehaviour _firstCharacter;
 
-    private List<CharacterBehaviour> _playerList = new List<CharacterBehaviour>();
+    public List<CharacterBehaviour> _playerList = new List<CharacterBehaviour>();
     private int _playerCount = 1;
     private float _playerBarFactor;
     private float _populateRadius;
     private Vector3 _firstPosition;
     private Vector3 _secondPosition;
     private Vector3 _populateTransform;
-    private int _depopulateAmount;
-
-    //private bool _playerCountChanged;
 
     private void Start()
     {
-        //_doorBehaviour.IsPlayerPassAGate += PlayerIsPassAGate;
         _playerList.Add(_firstCharacter);
-    }
-
-    private void OnDestroy()
-    {
-        //_doorBehaviour.IsPlayerPassAGate -= PlayerIsPassAGate;
+        Debug.Log("Player Count is " + _playerCount);
     }
 
     public void PlayerIsPassAGate(int playerCount)
     {
         if (playerCount > _playerCount)
         {
+            Debug.Log(playerCount);
             _populateRadius++;
-            PopulatePlayers(playerCount, _populateTransform, _populateRadius);
+            PopulatePlayers(playerCount - _playerCount, _populateTransform, _populateRadius);
         }
         else if(playerCount < _playerCount)
         {
-            _depopulateAmount = _playerList.Count - playerCount;
-            Debug.Log(_depopulateAmount);
-            _populateRadius--;
-            DepopulatePlayers(_depopulateAmount);
+            Debug.Log(playerCount);
+            DepopulatePlayers(_playerCount - playerCount);
         }
         else
         {
