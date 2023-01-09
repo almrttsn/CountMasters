@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum Operations
 {
@@ -17,7 +18,6 @@ public class DoorBehaviour : MonoBehaviour
     //public event Action<float> IsPlayerPassAGate; 
     [SerializeField] private int _operationFactor;
     private PlayerParentBehaviour _playerBehaviour;
-    private bool _playerPassedDoor;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -29,19 +29,15 @@ public class DoorBehaviour : MonoBehaviour
             switch (_operations)
             {
                 case Operations.Plus:
-                    Debug.Log(_playerBehaviour.PlayerCount + _operationFactor);
                     _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCount + _operationFactor);
                     break;
                 case Operations.Minus:
-                    Debug.Log(_playerBehaviour.PlayerCount - _operationFactor);
                     _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCount - _operationFactor);
                     break;
-                case Operations.Divided:
-                    Debug.Log(_playerBehaviour.PlayerCount / _operationFactor);
+                case Operations.Divided:                   
                     _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCount / _operationFactor);
                     break;
-                case Operations.Multiply:
-                    Debug.Log(_playerBehaviour.PlayerCount * _operationFactor);
+                case Operations.Multiply:                    
                     _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCount * _operationFactor);
                     break;
             }
