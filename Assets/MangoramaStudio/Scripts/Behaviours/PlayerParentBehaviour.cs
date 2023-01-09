@@ -26,18 +26,18 @@ public class PlayerParentBehaviour : MonoBehaviour
         Debug.Log("Player Count is " + _playerCount);
     }
 
-    public void PlayerIsPassAGate(int playerCount)
+    public void PlayerIsPassAGate(int targetPlayerCount)
     {
-        if (playerCount > _playerCount)
+        if (targetPlayerCount > _playerCount)
         {
-            Debug.Log(playerCount);
+            Debug.Log(targetPlayerCount);
             _populateRadius++;
-            PopulatePlayers(playerCount - _playerCount, _populateTransform, _populateRadius);
+            AddNewPlayers(targetPlayerCount - _playerCount, _populateTransform, _populateRadius);
         }
-        else if(playerCount < _playerCount)
+        else if(targetPlayerCount < _playerCount)
         {
-            Debug.Log(playerCount);
-            DepopulatePlayers(_playerCount - playerCount);
+            Debug.Log(targetPlayerCount);
+            RemovePlayers(_playerCount - targetPlayerCount);
         }
         else
         {
@@ -45,7 +45,7 @@ public class PlayerParentBehaviour : MonoBehaviour
         }
     }
 
-    public void PopulatePlayers(float num, Vector3 point, float radius)
+    public void AddNewPlayers(float num, Vector3 point, float radius)
     {
 
         for (int i = 0; i < num; i++)
@@ -72,7 +72,7 @@ public class PlayerParentBehaviour : MonoBehaviour
         _playerCount = _playerList.Count;
     }
 
-    private void DepopulatePlayers(int depopulateAmount)
+    private void RemovePlayers(int depopulateAmount)
     {
         for (int i = 0; i < depopulateAmount; i++)
         {
