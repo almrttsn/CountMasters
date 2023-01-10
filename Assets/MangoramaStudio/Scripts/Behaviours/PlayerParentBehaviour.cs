@@ -11,6 +11,7 @@ public class PlayerParentBehaviour : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private CharacterBehaviour _characterBehaviourPrefab;
     [SerializeField] private CharacterBehaviour _firstCharacter;
+    [SerializeField] private int _initializePopulateAmount;
 
     public List<CharacterBehaviour> _playerList = new List<CharacterBehaviour>();
     private int _playerCount = 1;
@@ -18,12 +19,17 @@ public class PlayerParentBehaviour : MonoBehaviour
     private float _populateRadius;
     private Vector3 _firstPosition;
     private Vector3 _secondPosition;
-    private Vector3 _populateTransform;
+    private Vector3 _populatePosition;
 
     private void Start()
     {
         _playerList.Add(_firstCharacter);
         Debug.Log("Player Count is " + _playerCount);
+        AddNewPlayers(_initializePopulateAmount - _playerCount, _populatePosition, 1f);
+        for (int i = 1; i < _playerList.Count; i++)
+        {
+            _playerList[i].gameObject.SetActive(false);
+        }
     }
 
     public void PlayerIsPassAGate(int targetPlayerCount)
@@ -32,17 +38,87 @@ public class PlayerParentBehaviour : MonoBehaviour
         {
             Debug.Log(targetPlayerCount);
             _populateRadius++;
-            AddNewPlayers(targetPlayerCount - _playerCount, _populateTransform, _populateRadius);
+            //AddNewPlayers(targetPlayerCount - _playerCount, _populateTransform, _populateRadius);
+            ActivateDesiredAmountCharacters(targetPlayerCount);
+            _playerCount = targetPlayerCount;
+            ReArrangeCharacterPositions();
         }
-        else if(targetPlayerCount < _playerCount)
+        else if (targetPlayerCount < _playerCount)
         {
             Debug.Log(targetPlayerCount);
+            //RemovePlayers(_playerCount - targetPlayerCount);
             RemovePlayers(_playerCount - targetPlayerCount);
+            _playerCount = targetPlayerCount;
+            ReArrangeCharacterPositions();
         }
         else
         {
             return;
         }
+    }
+
+    [Button]
+    private void ReArrangeCharacterPositions()
+    {
+        List<CharacterBehaviour> firstCircleCharacters = new List<CharacterBehaviour>();
+        List<CharacterBehaviour> secondCircleCharacters = new List<CharacterBehaviour>();
+        for (int i = 1; i < _playerCount; i++)
+        {
+            if (firstCircleCharacters.Count < 10)
+            {
+                firstCircleCharacters.Add(_playerList[i]);
+            }
+            else
+            {
+                secondCircleCharacters.Add(_playerList[i]);
+            }
+        }
+        SetCharacterPositions(firstCircleCharacters, 1);
+        SetCharacterPositions(secondCircleCharacters, 2);
+
+    }
+
+    private void SetCharacterPositions(List<CharacterBehaviour> characterBehaviours, int radius)
+    {
+        for (int i = 0; i < characterBehaviours.Count; i++)
+        {
+
+            /* Distance around the circle */
+            var radians = 2 * Mathf.PI / characterBehaviours.Count * i;
+            /* Get the vector direction */
+            var vertical = Mathf.Sin(radians);
+            var horizontal = Mathf.Cos(radians);
+            var spawnDir = new Vector3(horizontal, 0, vertical);
+            /* Get the spawn position */
+            var spawnPos = _populatePosition + spawnDir * radius; // Radius is just the distance away from the point
+            /* Now spawn */
+            characterBehaviours[i].MoveChacartersToTerritory(spawnPos);
+        }
+    }
+
+    private void ActivateDesiredAmountCharacters(int targetPlayerCount)
+    {
+        for (int i = 0; i < targetPlayerCount; i++)
+        {
+            _playerList[i].gameObject.SetActive(true);
+        }
+        _playerCount = targetPlayerCount;
+
+    }
+
+    private void RemovePlayers(int depopulateAmount)
+    {
+        //for (int i = 0; i < depopulateAmount; i++)
+        //{
+        //    Destroy(_playerList[_playerList.Count -1].gameObject);
+        //    _playerList.RemoveAt(_playerList.Count - 1);
+        //}
+
+        for (int i = _playerCount - 1; i >= _playerCount - depopulateAmount; i--) //listenin sonundan silme
+        {
+            _playerList[i].gameObject.SetActive(false);
+        }
+        //_playerCount = _playerList.Count;
     }
 
     public void AddNewPlayers(float num, Vector3 point, float radius)
@@ -69,18 +145,9 @@ public class PlayerParentBehaviour : MonoBehaviour
             /* Adjust height */
             //player.transform.Translate(new Vector3(0, player.transform.localScale.y / 2, 0));
         }
-        _playerCount = _playerList.Count;
+        //_playerCount = _playerList.Count;
     }
 
-    private void RemovePlayers(int depopulateAmount)
-    {
-        for (int i = 0; i < depopulateAmount; i++)
-        {
-            Destroy(_playerList[_playerList.Count -1].gameObject);
-            _playerList.RemoveAt(_playerList.Count - 1);
-        }
-        _playerCount = _playerList.Count;
-    }
 
 
     private void Update()
@@ -105,12 +172,12 @@ public class PlayerParentBehaviour : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.position += new Vector3(-.01f, 0, 0);
+            transform.position += new Vector3(-.05f, 0, 0);
         }
 
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            transform.position += new Vector3(.01f, 0, 0);
+            transform.position += new Vector3(.05f, 0, 0);
         }
 
         //if (_playerCountChanged == true)
