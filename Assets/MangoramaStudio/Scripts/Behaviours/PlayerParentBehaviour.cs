@@ -92,7 +92,7 @@ public class PlayerParentBehaviour : MonoBehaviour
             /* Get the spawn position */
             var spawnPos = _populatePosition + spawnDir * radius; // Radius is just the distance away from the point
             /* Now spawn */
-            characterBehaviours[i].MoveChacartersToTerritory(spawnPos);
+            characterBehaviours[i].MoveCharactersToTerritory(spawnPos);
         }
     }
 
@@ -138,7 +138,7 @@ public class PlayerParentBehaviour : MonoBehaviour
             var character = Instantiate(_characterBehaviourPrefab) as CharacterBehaviour;
             character.transform.parent = gameObject.transform;
             character.transform.position = transform.position;
-            character.MoveChacartersToTerritory(spawnPos);
+            character.MoveCharactersToTerritory(spawnPos);
             _playerList.Add(character);
             /* Rotate the enemy to face towards player */
             //enemy.transform.LookAt(point);

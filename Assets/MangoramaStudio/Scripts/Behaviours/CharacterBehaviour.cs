@@ -17,7 +17,7 @@ public class CharacterBehaviour : MonoBehaviour
         }
     }
 
-    public void MoveChacartersToTerritory(Vector3 spawnPos)
+    public void MoveCharactersToTerritory(Vector3 spawnPos)
     {        
         _spawnPos = spawnPos;
         _isStartedToMove = true;
