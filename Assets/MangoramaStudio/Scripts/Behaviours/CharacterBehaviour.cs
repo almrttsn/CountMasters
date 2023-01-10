@@ -19,7 +19,7 @@ public class CharacterBehaviour : MonoBehaviour
 
     public void MoveChacartersToTerritory(Vector3 spawnPos)
     {        
-        _spawnPos = transform.localPosition + spawnPos;
+        _spawnPos = spawnPos;
         _isStartedToMove = true;
     }
 }
