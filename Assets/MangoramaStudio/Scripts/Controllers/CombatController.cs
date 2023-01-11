@@ -21,7 +21,6 @@ public class CombatController : MonoBehaviour
     {
         Debug.Log("Event arrived");
         playerParentBehaviour.MovementRestricted = true;
-        var playerListCount = playerParentBehaviour.PlayerList.Count;
         var enemyListCount = enemyParentBehaviour.EnemyList.Count;
 
         ActiveCharactersAmountOnPlayerList();
@@ -33,7 +32,6 @@ public class CombatController : MonoBehaviour
             for (int i = 0; i < _activeCharacterAmount; i++)
             {
                 playerParentBehaviour.PlayerList[i].gameObject.SetActive(false);
-                StartCoroutine(CombatCo());
                 Destroy(enemyParentBehaviour.EnemyList[i].gameObject);
             }
             Debug.Log("Level Failed");
@@ -43,7 +41,6 @@ public class CombatController : MonoBehaviour
             for (int i = 0; i < enemyListCount; i++)
             {
                 playerParentBehaviour.PlayerList[i].gameObject.SetActive(false);
-                StartCoroutine(CombatCo());
                 Destroy(enemyParentBehaviour.EnemyList[i].gameObject);
                 Debug.Log("Killing enemy");
 
@@ -52,6 +49,10 @@ public class CombatController : MonoBehaviour
             playerParentBehaviour.EncounterHappened = false;
             Debug.Log("Player won the combat");
         }
+        _activeCharacterAmount = 0;
+        ActiveCharactersAmountOnPlayerList();
+        _playerParentBehaviour.PlayerCharacterAmount = _activeCharacterAmount;
+        Debug.Log("Player Count is " + _playerParentBehaviour.PlayerCharacterAmount);
     }
 
     private int ActiveCharactersAmountOnPlayerList()
@@ -64,10 +65,5 @@ public class CombatController : MonoBehaviour
             }
         }
         return _activeCharacterAmount;
-    }
-
-    private IEnumerator CombatCo()
-    {
-        yield return new WaitForSeconds(1f);
     }
 }
