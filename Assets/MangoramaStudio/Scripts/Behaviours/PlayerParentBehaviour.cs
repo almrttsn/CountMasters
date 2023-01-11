@@ -1,25 +1,33 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerParentBehaviour : MonoBehaviour
 {
+    public event Action<PlayerParentBehaviour,EnemyParentBehaviour> IsCombatBegan;
+    public List<CharacterBehaviour> PlayerList => _playerList;
+
     public int PlayerCount => _playerCount;
     public float PlayerBarFactor => _playerBarFactor;
+    public bool MovementRestricted { get; set; }
+    public bool EncounterHappened { get; set; }
 
     [SerializeField] private float _speed;
     [SerializeField] private CharacterBehaviour _characterBehaviourPrefab;
     [SerializeField] private CharacterBehaviour _firstCharacter;
     [SerializeField] private int _initializePopulateAmount;
 
-    public List<CharacterBehaviour> _playerList = new List<CharacterBehaviour>();
+    private List<CharacterBehaviour> _playerList = new List<CharacterBehaviour>();
     private int _playerCount = 1;
     private float _playerBarFactor;
     private float _populateRadius;
     private Vector3 _firstPosition;
     private Vector3 _secondPosition;
     private Vector3 _populatePosition;
+    private bool _encounterHappened;
+    private EnemyParentBehaviour _encounteredEnemy;
 
     private void Start()
     {
@@ -148,12 +156,23 @@ public class PlayerParentBehaviour : MonoBehaviour
         //_playerCount = _playerList.Count;
     }
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Enemy" && EncounterHappened == false)
+        {
+            _encounteredEnemy = other.GetComponent<EnemyParentBehaviour>();
+            IsCombatBegan?.Invoke(this,_encounteredEnemy);
+            Debug.Log("Combat began");
+            EncounterHappened = true;
+        }
+    }
 
     private void Update()
     {
-        transform.position += new Vector3(0, 0, _speed) * Time.deltaTime;
-
+        if (MovementRestricted == false)
+        {
+            transform.position += new Vector3(0, 0, _speed) * Time.deltaTime;
+        }
         _playerBarFactor = _playerCount / 100f;
 
 
