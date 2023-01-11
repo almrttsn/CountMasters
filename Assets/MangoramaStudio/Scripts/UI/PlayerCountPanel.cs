@@ -10,6 +10,6 @@ public class PlayerCountPanel : MonoBehaviour
 
     private void Update()
     {
-        _playerCountText.text = (" Player Count is: " + _playerParentBehaviour.PlayerCount);
+        _playerCountText.text = (" Player Count is: " + _playerParentBehaviour.PlayerCharacterAmount);
     }
 }
