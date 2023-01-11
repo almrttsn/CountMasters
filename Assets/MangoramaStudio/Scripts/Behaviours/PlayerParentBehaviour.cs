@@ -176,7 +176,7 @@ public class PlayerParentBehaviour : MonoBehaviour
         {
             transform.position += new Vector3(0, 0, _speed) * Time.deltaTime;
         }
-        _playerBarFactor = PlayerCharacterAmount / 100f;
+        _playerBarFactor = PlayerCharacterAmount / 10f;
 
 
         if (Input.GetMouseButtonDown(0))
