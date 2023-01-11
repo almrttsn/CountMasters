@@ -29,16 +29,16 @@ public class DoorBehaviour : MonoBehaviour
             switch (_operations)
             {
                 case Operations.Plus:
-                    _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCount + _operationFactor);
+                    _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCharacterAmount + _operationFactor);
                     break;
                 case Operations.Minus:
-                    _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCount - _operationFactor);
+                    _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCharacterAmount - _operationFactor);
                     break;
                 case Operations.Divided:                   
-                    _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCount / _operationFactor);
+                    _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCharacterAmount / _operationFactor);
                     break;
                 case Operations.Multiply:                    
-                    _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCount * _operationFactor);
+                    _playerBehaviour.PlayerIsPassAGate(_playerBehaviour.PlayerCharacterAmount * _operationFactor);
                     break;
             }
         }
