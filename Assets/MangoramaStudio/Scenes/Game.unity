@@ -1324,7 +1324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75345ff3c2e1877478991fac908bd243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyCount: 5
+  _enemyCount: 4
   _enemyCharacter: {fileID: 6062245520995850836}
 --- !u!65 &1397511766
 BoxCollider:
