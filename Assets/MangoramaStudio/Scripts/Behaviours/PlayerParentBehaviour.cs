@@ -9,10 +9,12 @@ public class PlayerParentBehaviour : MonoBehaviour
     public event Action<PlayerParentBehaviour,EnemyParentBehaviour> IsCombatBegan;
     public List<CharacterBehaviour> PlayerList => _playerList;
 
-    public int PlayerCount => _playerCount;
+    //public int PlayerCount => PlayerCharacterAmount;
     public float PlayerBarFactor => _playerBarFactor;
     public bool MovementRestricted { get; set; }
     public bool EncounterHappened { get; set; }
+    public int PlayerCharacterAmount { get; set; }
+    
 
     [SerializeField] private float _speed;
     [SerializeField] private CharacterBehaviour _characterBehaviourPrefab;
@@ -20,7 +22,6 @@ public class PlayerParentBehaviour : MonoBehaviour
     [SerializeField] private int _initializePopulateAmount;
 
     private List<CharacterBehaviour> _playerList = new List<CharacterBehaviour>();
-    private int _playerCount = 1;
     private float _playerBarFactor;
     private float _populateRadius;
     private Vector3 _firstPosition;
@@ -31,9 +32,10 @@ public class PlayerParentBehaviour : MonoBehaviour
 
     private void Start()
     {
+        PlayerCharacterAmount = 1;
         _playerList.Add(_firstCharacter);
-        Debug.Log("Player Count is " + _playerCount);
-        AddNewPlayers(_initializePopulateAmount - _playerCount, _populatePosition, 1f);
+        Debug.Log("Player Count is " + PlayerCharacterAmount);
+        AddNewPlayers(_initializePopulateAmount - PlayerCharacterAmount, _populatePosition, 1f);
         for (int i = 1; i < _playerList.Count; i++)
         {
             _playerList[i].gameObject.SetActive(false);
@@ -42,21 +44,20 @@ public class PlayerParentBehaviour : MonoBehaviour
 
     public void PlayerIsPassAGate(int targetPlayerCount)
     {
-        if (targetPlayerCount > _playerCount)
+        if (targetPlayerCount > PlayerCharacterAmount)
         {
-            Debug.Log(targetPlayerCount);
+            Debug.Log("Player Count is " + targetPlayerCount);
             _populateRadius++;
             //AddNewPlayers(targetPlayerCount - _playerCount, _populateTransform, _populateRadius);
             ActivateDesiredAmountCharacters(targetPlayerCount);
-            _playerCount = targetPlayerCount;
+            PlayerCharacterAmount = targetPlayerCount;
             ReArrangeCharacterPositions();
         }
-        else if (targetPlayerCount < _playerCount)
+        else if (targetPlayerCount < PlayerCharacterAmount)
         {
-            Debug.Log(targetPlayerCount);
+            Debug.Log("Player Count is " + targetPlayerCount);
             //RemovePlayers(_playerCount - targetPlayerCount);
-            RemovePlayers(_playerCount - targetPlayerCount);
-            _playerCount = targetPlayerCount;
+            RemovePlayers(PlayerCharacterAmount - targetPlayerCount);
             ReArrangeCharacterPositions();
         }
         else
@@ -70,7 +71,7 @@ public class PlayerParentBehaviour : MonoBehaviour
     {
         List<CharacterBehaviour> firstCircleCharacters = new List<CharacterBehaviour>();
         List<CharacterBehaviour> secondCircleCharacters = new List<CharacterBehaviour>();
-        for (int i = 1; i < _playerCount; i++)
+        for (int i = 1; i < PlayerCharacterAmount; i++)
         {
             if (firstCircleCharacters.Count < 10)
             {
@@ -110,7 +111,7 @@ public class PlayerParentBehaviour : MonoBehaviour
         {
             _playerList[i].gameObject.SetActive(true);
         }
-        _playerCount = targetPlayerCount;
+        PlayerCharacterAmount = targetPlayerCount;
 
     }
 
@@ -122,10 +123,12 @@ public class PlayerParentBehaviour : MonoBehaviour
         //    _playerList.RemoveAt(_playerList.Count - 1);
         //}
 
-        for (int i = _playerCount - 1; i >= _playerCount - depopulateAmount; i--) //listenin sonundan silme
+        for (int i = PlayerCharacterAmount - 1; i >= PlayerCharacterAmount - depopulateAmount; i--) //remove objects from end of the list
         {
             _playerList[i].gameObject.SetActive(false);
         }
+        PlayerCharacterAmount = PlayerCharacterAmount - depopulateAmount;
+
         //_playerCount = _playerList.Count;
     }
 
@@ -160,9 +163,9 @@ public class PlayerParentBehaviour : MonoBehaviour
     {
         if (other.tag == "Enemy" && EncounterHappened == false)
         {
+            Debug.Log("Combat began");
             _encounteredEnemy = other.GetComponent<EnemyParentBehaviour>();
             IsCombatBegan?.Invoke(this,_encounteredEnemy);
-            Debug.Log("Combat began");
             EncounterHappened = true;
         }
     }
@@ -173,7 +176,7 @@ public class PlayerParentBehaviour : MonoBehaviour
         {
             transform.position += new Vector3(0, 0, _speed) * Time.deltaTime;
         }
-        _playerBarFactor = _playerCount / 100f;
+        _playerBarFactor = PlayerCharacterAmount / 100f;
 
 
         if (Input.GetMouseButtonDown(0))
