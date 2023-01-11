@@ -38,10 +38,10 @@ public class CombatController : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < enemyListCount; i++)
+            for (int i = _activeCharacterAmount - 1; i >= _activeCharacterAmount - enemyListCount; i--) //remove player character from end of list
             {
                 playerParentBehaviour.PlayerList[i].gameObject.SetActive(false);
-                Destroy(enemyParentBehaviour.EnemyList[i].gameObject);
+                Destroy(enemyParentBehaviour.EnemyList[i-(_activeCharacterAmount - enemyListCount)].gameObject);
                 Debug.Log("Killing enemy");
 
             }
