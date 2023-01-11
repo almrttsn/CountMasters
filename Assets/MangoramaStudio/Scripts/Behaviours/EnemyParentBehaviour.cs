@@ -18,7 +18,7 @@ public class EnemyParentBehaviour : MonoBehaviour
 
     private void Start()
     {
-        AddNewPlayers(_enemyCount, _populatePosition, 1.5f);
+        AddNewPlayers(_enemyCount -1, _populatePosition, 1.5f);
         _enemyList.Add(_enemyCharacter);
     }
 
