@@ -49,14 +49,14 @@ public class CombatController : MonoBehaviour
             playerParentBehaviour.EncounterHappened = false;
             Debug.Log("Player won the combat");
         }
-        _activeCharacterAmount = 0;
         ActiveCharactersAmountOnPlayerList();
         _playerParentBehaviour.PlayerCharacterAmount = _activeCharacterAmount;
         Debug.Log("Player Count is " + _playerParentBehaviour.PlayerCharacterAmount);
     }
 
-    private int ActiveCharactersAmountOnPlayerList()
+    private void ActiveCharactersAmountOnPlayerList()
     {
+        _activeCharacterAmount = 0;
         for (int i = 0; i < _playerParentBehaviour.PlayerList.Count; i++)
         {
             if (_playerParentBehaviour.PlayerList[i].isActiveAndEnabled == true)
@@ -64,6 +64,5 @@ public class CombatController : MonoBehaviour
                 _activeCharacterAmount++;
             }
         }
-        return _activeCharacterAmount;
     }
 }
