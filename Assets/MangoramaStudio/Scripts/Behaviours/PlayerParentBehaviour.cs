@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerParentBehaviour : MonoBehaviour
 {
-    public event Action<PlayerParentBehaviour,EnemyParentBehaviour> IsCombatBegan;
+    public event Action<PlayerParentBehaviour, EnemyParentBehaviour> IsCombatBegan;
     public List<CharacterBehaviour> PlayerList => _playerList;
 
     //public int PlayerCount => PlayerCharacterAmount;
@@ -14,7 +14,7 @@ public class PlayerParentBehaviour : MonoBehaviour
     public bool MovementRestricted { get; set; }
     public bool EncounterHappened { get; set; }
     public int PlayerCharacterAmount { get; set; }
-    
+
 
     [SerializeField] private float _speed;
     [SerializeField] private CharacterBehaviour _characterBehaviourPrefab;
@@ -48,9 +48,18 @@ public class PlayerParentBehaviour : MonoBehaviour
         {
             Debug.Log("Player Count is " + targetPlayerCount);
             _populateRadius++;
-            //AddNewPlayers(targetPlayerCount - _playerCount, _populateTransform, _populateRadius);
-            ActivateDesiredAmountCharacters(targetPlayerCount);
-            PlayerCharacterAmount = targetPlayerCount;
+            if (targetPlayerCount >= _playerList.Count)
+            {
+                ActivateDesiredAmountCharacters(_playerList.Count);
+                PlayerCharacterAmount = _playerList.Count;
+                Debug.Log("Player character amount is " + PlayerCharacterAmount);
+            }
+            else
+            {
+                ActivateDesiredAmountCharacters(targetPlayerCount);
+                PlayerCharacterAmount = targetPlayerCount;
+                Debug.Log("Player character amount is " + PlayerCharacterAmount);
+            }
             ReArrangeCharacterPositions();
         }
         else if (targetPlayerCount < PlayerCharacterAmount)
@@ -163,10 +172,10 @@ public class PlayerParentBehaviour : MonoBehaviour
     {
         if (other.tag == "Enemy" && EncounterHappened == false)
         {
+            EncounterHappened = true;
             Debug.Log("Combat began");
             _encounteredEnemy = other.GetComponent<EnemyParentBehaviour>();
-            IsCombatBegan?.Invoke(this,_encounteredEnemy);
-            EncounterHappened = true;
+            IsCombatBegan?.Invoke(this, _encounteredEnemy);
         }
     }
 
