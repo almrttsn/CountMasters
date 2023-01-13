@@ -8,6 +8,7 @@ public class CombatController : MonoBehaviour
     [SerializeField] private PlayerParentBehaviour _playerParentBehaviour;
 
     private int _activeCharacterAmount;
+    private bool _combatFinished;
 
     private void Start()
     {
@@ -22,6 +23,7 @@ public class CombatController : MonoBehaviour
     {
         Debug.Log("Event arrived");
         playerParentBehaviour.MovementRestricted = true;
+        StartCoroutine(CombatTimeCo());
         var enemyListCount = enemyParentBehaviour.EnemyList.Count;
 
         ActiveCharactersAmountOnPlayerList();
@@ -30,30 +32,42 @@ public class CombatController : MonoBehaviour
 
         if (_activeCharacterAmount <= enemyListCount)
         {
-            for (int i = 0; i < _activeCharacterAmount; i++)
-            {
-                playerParentBehaviour.PlayerList[i].gameObject.SetActive(false);
-                Destroy(enemyParentBehaviour.EnemyList[i].gameObject);
-            }
-            Debug.Log("Level Failed");
+            EnemyBeatPlayer(playerParentBehaviour, enemyParentBehaviour);
         }
         else
         {
-            for (int i = _activeCharacterAmount - 1; i >= _activeCharacterAmount - enemyListCount; i--)
-            {
-                playerParentBehaviour.PlayerList[i].gameObject.SetActive(false);
-                Destroy(enemyParentBehaviour.EnemyList[i-(_activeCharacterAmount - enemyListCount)].gameObject);
-                Debug.Log("Killing enemy");
-
-            }
-            playerParentBehaviour.MovementRestricted = false;
-            playerParentBehaviour.EncounterHappened = false;
-            Debug.Log("Player won the combat");
+            PlayerBeatEnemy(playerParentBehaviour, enemyParentBehaviour, enemyListCount);
         }
         ActiveCharactersAmountOnPlayerList();
         _playerParentBehaviour.PlayerCharacterAmount = _activeCharacterAmount;
         Debug.Log("Player Count is " + _playerParentBehaviour.PlayerCharacterAmount + ("FromAfterLastCombat"));
     }
+
+    #region CombatConsequences
+    private void PlayerBeatEnemy(PlayerParentBehaviour playerParentBehaviour, EnemyParentBehaviour enemyParentBehaviour, int enemyListCount)
+    {
+        for (int i = _activeCharacterAmount - 1; i >= _activeCharacterAmount - enemyListCount; i--)
+        {
+            playerParentBehaviour.PlayerList[i].gameObject.SetActive(false);
+            Destroy(enemyParentBehaviour.EnemyList[i - (_activeCharacterAmount - enemyListCount)].gameObject);
+            Debug.Log("Killing enemy");
+
+        }
+        playerParentBehaviour.MovementRestricted = false;
+        playerParentBehaviour.EncounterHappened = false;
+        Debug.Log("Player won the combat");
+    }
+
+    private void EnemyBeatPlayer(PlayerParentBehaviour playerParentBehaviour, EnemyParentBehaviour enemyParentBehaviour)
+    {
+        for (int i = 0; i < _activeCharacterAmount; i++)
+        {
+            playerParentBehaviour.PlayerList[i].gameObject.SetActive(false);
+            Destroy(enemyParentBehaviour.EnemyList[i].gameObject);
+        }
+        Debug.Log("Level Failed");
+    }
+    #endregion
 
     private void ActiveCharactersAmountOnPlayerList()
     {
@@ -65,5 +79,14 @@ public class CombatController : MonoBehaviour
                 _activeCharacterAmount++;
             }
         }
+    }
+
+    private IEnumerator CombatTimeCo()
+    {
+        _playerParentBehaviour.CharacterSpeed = 0;
+        yield return new WaitForSeconds(1f);
+        _combatFinished = true;
+        _playerParentBehaviour.CharacterSpeed = 5f;
+
     }
 }

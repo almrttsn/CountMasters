@@ -13,8 +13,8 @@ public class PlayerParentBehaviour : MonoBehaviour
     public bool MovementRestricted { get; set; }
     public bool EncounterHappened { get; set; }
     public int PlayerCharacterAmount { get; set; }
+    public float CharacterSpeed { get; set; }
 
-    [SerializeField] private float _speed;
     [SerializeField] private CharacterBehaviour _characterBehaviourPrefab;
     [SerializeField] private CharacterBehaviour _firstCharacter;
     [SerializeField] private int _initializePopulateAmount;
@@ -39,6 +39,7 @@ public class PlayerParentBehaviour : MonoBehaviour
         {
             _playerList[i].gameObject.SetActive(false);
         }
+        CharacterSpeed = 5f;
     }
 
     #region PassingGate
@@ -160,10 +161,10 @@ public class PlayerParentBehaviour : MonoBehaviour
 
     private void Update()
     {
-        if (MovementRestricted == false)
-        {
-            transform.position += new Vector3(0, 0, _speed) * Time.deltaTime;
-        }
+        transform.position += new Vector3(0, 0, CharacterSpeed) * Time.deltaTime;
+        //if (MovementRestricted == false)
+        //{
+        //}
         _playerBarFactor = PlayerCharacterAmount / 10f;
 
         if (Input.GetMouseButtonDown(0))
