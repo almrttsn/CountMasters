@@ -5,11 +5,9 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-
     private bool _isStartedToMove;
     private float _lerpValue;
     private Vector3 _spawnPos;
-
 
     private void Update()
     {
@@ -24,7 +22,5 @@ public class EnemyBehaviour : MonoBehaviour
     {
         _spawnPos = spawnPos;
         _isStartedToMove = true;
-    }
-
-    
+    }    
 }

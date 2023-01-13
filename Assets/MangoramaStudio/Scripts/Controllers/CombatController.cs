@@ -6,6 +6,7 @@ using UnityEngine;
 public class CombatController : MonoBehaviour
 {
     [SerializeField] private PlayerParentBehaviour _playerParentBehaviour;
+
     private int _activeCharacterAmount;
 
     private void Start()
@@ -25,7 +26,7 @@ public class CombatController : MonoBehaviour
 
         ActiveCharactersAmountOnPlayerList();
 
-        Debug.Log("Active character amount on player list is " + _activeCharacterAmount);
+        Debug.Log("Active character amount on player list is " + _activeCharacterAmount + ("FromAfterFirstAmountCalculation"));
 
         if (_activeCharacterAmount <= enemyListCount)
         {
@@ -38,7 +39,7 @@ public class CombatController : MonoBehaviour
         }
         else
         {
-            for (int i = _activeCharacterAmount - 1; i >= _activeCharacterAmount - enemyListCount; i--) //remove player character from end of list
+            for (int i = _activeCharacterAmount - 1; i >= _activeCharacterAmount - enemyListCount; i--)
             {
                 playerParentBehaviour.PlayerList[i].gameObject.SetActive(false);
                 Destroy(enemyParentBehaviour.EnemyList[i-(_activeCharacterAmount - enemyListCount)].gameObject);
@@ -51,7 +52,7 @@ public class CombatController : MonoBehaviour
         }
         ActiveCharactersAmountOnPlayerList();
         _playerParentBehaviour.PlayerCharacterAmount = _activeCharacterAmount;
-        Debug.Log("Player Count is " + _playerParentBehaviour.PlayerCharacterAmount);
+        Debug.Log("Player Count is " + _playerParentBehaviour.PlayerCharacterAmount + ("FromAfterLastCombat"));
     }
 
     private void ActiveCharactersAmountOnPlayerList()

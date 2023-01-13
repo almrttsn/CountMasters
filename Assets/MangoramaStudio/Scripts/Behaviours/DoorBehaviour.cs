@@ -15,7 +15,6 @@ public enum Operations
 public class DoorBehaviour : MonoBehaviour
 {
     public Operations _operations;
-    //public event Action<float> IsPlayerPassAGate; 
     [SerializeField] private int _operationFactor;
     [SerializeField] private TextMesh _doorText;
     private PlayerParentBehaviour _playerBehaviour;
