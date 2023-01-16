@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 450e0392146353c488701b6c24729343, type: 2}
 --- !u!224 &115652014 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6794633095814168789, guid: 80a9d2d5935d34b43ada153cf632df1c,
@@ -661,6 +661,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCountText: {fileID: 923562924}
   _playerParentBehaviour: {fileID: 721111080}
+--- !u!4 &967803230 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8321023644103675920, guid: 1dd84f34e7460824f984d7a8eace3c4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8321023643401738295}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1472318668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1472318669}
+  m_Layer: 0
+  m_Name: CharacterLookTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1472318669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472318668}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 967803230}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!850595691 &1849001023
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -1079,6 +1115,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8321023643149372006, guid: 1dd84f34e7460824f984d7a8eace3c4e,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8321023643903275196, guid: 1dd84f34e7460824f984d7a8eace3c4e,
         type: 3}
       propertyPath: m_RootOrder
@@ -1139,5 +1180,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level1
       objectReference: {fileID: 0}
+    - target: {fileID: 8321023644103675935, guid: 1dd84f34e7460824f984d7a8eace3c4e,
+        type: 3}
+      propertyPath: _charactersLookVector
+      value: 
+      objectReference: {fileID: 1472318669}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dd84f34e7460824f984d7a8eace3c4e, type: 3}
