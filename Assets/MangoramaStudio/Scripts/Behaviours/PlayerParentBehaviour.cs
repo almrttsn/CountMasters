@@ -21,6 +21,7 @@ public class PlayerParentBehaviour : MonoBehaviour
     [SerializeField] private float _populateRadiusForFirstInstantiate;
     [SerializeField] private float _radiusForFirstQueue;
     [SerializeField] private float _radiusForSecondQueue;
+    [SerializeField] private Transform _charactersLookVector;
 
     private List<CharacterBehaviour> _playerList = new List<CharacterBehaviour>();
     private float _playerBarFactor;
@@ -105,8 +106,8 @@ public class PlayerParentBehaviour : MonoBehaviour
             var vertical = Mathf.Sin(radians);
             var horizontal = Mathf.Cos(radians);
             var spawnDir = new Vector3(horizontal, 0, vertical);
-            var spawnPos = _populatePosition + spawnDir * radius;
-            characterBehaviours[i].MoveCharactersToTerritory(spawnPos);
+            var spawnPos = _populatePosition + spawnDir * radius * 3f;
+            characterBehaviours[i].MoveCharactersToTerritory(spawnPos,transform);
         }
     }
     #endregion
@@ -120,11 +121,11 @@ public class PlayerParentBehaviour : MonoBehaviour
             var vertical = Mathf.Sin(radians);
             var horizontal = Mathf.Cos(radians);
             var spawnDir = new Vector3(horizontal, 0, vertical);
-            var spawnPos = point + spawnDir * radius;
+            var spawnPos = point + spawnDir * radius * 3f;
             var character = Instantiate(_characterBehaviourPrefab) as CharacterBehaviour;
             character.transform.parent = gameObject.transform;
             character.transform.position = transform.position;
-            character.MoveCharactersToTerritory(spawnPos);
+            character.MoveCharactersToTerritory(spawnPos,transform);
             _playerList.Add(character);
         }
     }
