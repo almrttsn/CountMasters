@@ -7,10 +7,9 @@ public class CharacterBehaviour : MonoBehaviour
 {
 
     [SerializeField] private NavMeshAgent _navMeshAgent;
-    private bool _isStartedToMove;
-    private float _lerpValue;
-    private Transform _playerParentTransform;
     private Vector3 _spawnPos;
+    private bool _isStartedToMove;
+    private Transform _playerParentTransform;
 
     private void Update()
     {

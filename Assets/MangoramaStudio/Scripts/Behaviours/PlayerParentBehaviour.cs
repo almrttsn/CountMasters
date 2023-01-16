@@ -18,10 +18,8 @@ public class PlayerParentBehaviour : MonoBehaviour
     [SerializeField] private CharacterBehaviour _characterBehaviourPrefab;
     [SerializeField] private CharacterBehaviour _firstCharacter;
     [SerializeField] private int _initializePopulateAmount;
-    [SerializeField] private float _populateRadiusForFirstInstantiate;
     [SerializeField] private float _radiusForFirstQueue;
     [SerializeField] private float _radiusForSecondQueue;
-    [SerializeField] private Transform _charactersLookVector;
 
     private List<CharacterBehaviour> _playerList = new List<CharacterBehaviour>();
     private float _playerBarFactor;
@@ -35,7 +33,7 @@ public class PlayerParentBehaviour : MonoBehaviour
         PlayerCharacterAmount = 1;
         _playerList.Add(_firstCharacter);
         Debug.Log("Player Count is " + PlayerCharacterAmount);
-        AddNewCharacters(_initializePopulateAmount - PlayerCharacterAmount, _populatePosition, _populateRadiusForFirstInstantiate);
+        CreateCharacterPool(_initializePopulateAmount - PlayerCharacterAmount);
         for (int i = 1; i < _playerList.Count; i++)
         {
             _playerList[i].gameObject.SetActive(false);
@@ -49,16 +47,15 @@ public class PlayerParentBehaviour : MonoBehaviour
         if (targetPlayerCount > PlayerCharacterAmount)
         {
             Debug.Log("Player Count is " + targetPlayerCount + ("FromPlayerPassAGate"));
-            _populateRadiusForFirstInstantiate++;
             if (targetPlayerCount >= _playerList.Count)
             {
-                ActivateDesiredAmountCharacters(_playerList.Count);
+                ActivateCharacters(_playerList.Count);
                 PlayerCharacterAmount = _playerList.Count;
                 Debug.Log("Player character amount is " + PlayerCharacterAmount + ("FromActivatePlayersEqualiseMaxPlayer"));
             }
             else
             {
-                ActivateDesiredAmountCharacters(targetPlayerCount);
+                ActivateCharacters(targetPlayerCount);
                 PlayerCharacterAmount = targetPlayerCount;
                 Debug.Log("Player character amount is " + PlayerCharacterAmount + ("FromActivatePlayersNormalAmount"));
             }
@@ -67,7 +64,7 @@ public class PlayerParentBehaviour : MonoBehaviour
         else if (targetPlayerCount < PlayerCharacterAmount)
         {
             Debug.Log("Player Count is " + targetPlayerCount + ("FromNoChangePlayerAmount"));
-            RemovePlayers(PlayerCharacterAmount - targetPlayerCount);
+            DeactivatePlayers(PlayerCharacterAmount - targetPlayerCount);
             ReArrangeCharacterPositions();
         }
         else
@@ -106,31 +103,26 @@ public class PlayerParentBehaviour : MonoBehaviour
             var vertical = Mathf.Sin(radians);
             var horizontal = Mathf.Cos(radians);
             var spawnDir = new Vector3(horizontal, 0, vertical);
-            var spawnPos = _populatePosition + spawnDir * radius * 3f;
-            characterBehaviours[i].MoveCharactersToTerritory(spawnPos,transform);
+            var spawnPos = (_populatePosition + spawnDir) * radius;
+            characterBehaviours[i].MoveCharactersToTerritory(spawnPos,_firstCharacter.transform);
         }
     }
     #endregion
 
     #region CharactersAddRemoveProcess
-    public void AddNewCharacters(float num, Vector3 point, float radius)
+    public void CreateCharacterPool(float num)
     {
         for (int i = 0; i < num; i++)
         {
-            var radians = 2 * Mathf.PI / num * i;
-            var vertical = Mathf.Sin(radians);
-            var horizontal = Mathf.Cos(radians);
-            var spawnDir = new Vector3(horizontal, 0, vertical);
-            var spawnPos = point + spawnDir * radius * 3f;
+            
             var character = Instantiate(_characterBehaviourPrefab) as CharacterBehaviour;
             character.transform.parent = gameObject.transform;
             character.transform.position = transform.position;
-            character.MoveCharactersToTerritory(spawnPos,transform);
             _playerList.Add(character);
         }
     }
 
-    private void RemovePlayers(int depopulateAmount)
+    private void DeactivatePlayers(int depopulateAmount)
     {
         for (int i = PlayerCharacterAmount - 1; i >= PlayerCharacterAmount - depopulateAmount; i--)
         {
@@ -140,7 +132,7 @@ public class PlayerParentBehaviour : MonoBehaviour
     }
     #endregion
 
-    private void ActivateDesiredAmountCharacters(int targetPlayerCount)
+    private void ActivateCharacters(int targetPlayerCount)
     {
         for (int i = 0; i < targetPlayerCount; i++)
         {
