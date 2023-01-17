@@ -1323,7 +1323,7 @@ PrefabInstance:
     - target: {fileID: 8321023644103675935, guid: 1dd84f34e7460824f984d7a8eace3c4e,
         type: 3}
       propertyPath: _radiusForFirstQueue
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8321023644103675935, guid: 1dd84f34e7460824f984d7a8eace3c4e,
         type: 3}

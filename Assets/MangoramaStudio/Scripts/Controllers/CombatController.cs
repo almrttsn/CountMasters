@@ -49,9 +49,12 @@ public class CombatController : MonoBehaviour
         for (int i = _activeCharacterAmount - 1; i >= _activeCharacterAmount - enemyListCount; i--)
         {
             playerParentBehaviour.PlayerList[i].gameObject.SetActive(false);
-            Destroy(enemyParentBehaviour.EnemyList[i - (_activeCharacterAmount - enemyListCount)].gameObject);
+            
+            var destroyEnemy = enemyParentBehaviour.EnemyList[0];
+            enemyParentBehaviour.EnemyList.RemoveAt(0);
+            Destroy(destroyEnemy.gameObject);
+            
             Debug.Log("Killing enemy");
-
         }
         playerParentBehaviour.MovementRestricted = false;
         playerParentBehaviour.EncounterHappened = false;

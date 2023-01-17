@@ -42,8 +42,9 @@ public class PlayerParentBehaviour : MonoBehaviour
             _playerList[i].gameObject.SetActive(false);
         }
         CharacterSpeed = 5f;
+        InputController.OnDrag += Dragged;
+        
     }
-
     #region PassingGate
     public void PlayerIsPassAGate(int targetPlayerCount)
     {
@@ -162,41 +163,10 @@ public class PlayerParentBehaviour : MonoBehaviour
         //{
         //}
         _playerBarFactor = PlayerCharacterAmount / 10f;
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            _firstPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Debug.Log(_firstPosition);
-        }
-
-        if (Input.GetMouseButton(0))
-        {
-            _secondPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Debug.Log(_secondPosition);
-
-            PlayerSwipeAtClampedAreaProcess();
-        }
     }
 
-    private void PlayerSwipeAtClampedAreaProcess()
+    private void Dragged(Vector2 dragVector)
     {
-        if (Mathf.Abs(_secondPosition.z -_firstPosition.z) < 0.01f)
-        {
-            return;
-        }
-        if (_secondPosition.z > _firstPosition.z)
-        {
-            transform.position += new Vector3(Mathf.Abs(_firstPosition.z - _secondPosition.z) * 100f, 0, 0) * Time.deltaTime;
-            Debug.Log("Going Right");
-        }
-        else if (_secondPosition.z < _firstPosition.z)
-        {
-            transform.position -= new Vector3(Mathf.Abs(_firstPosition.z - _secondPosition.z) * 100f, 0, 0) * Time.deltaTime;
-            Debug.Log("Going Left");
-        }
-        _firstPosition = _secondPosition;
-        var instantPosition = transform.position;
-        float clampedPos = Mathf.Clamp(instantPosition.x, -100f, 100f);
-        transform.position = new Vector3(clampedPos, transform.position.y, transform.position.z);
+        transform.position += new Vector3(dragVector.x * 100f, 0, 0) * Time.deltaTime;
     }
 }
