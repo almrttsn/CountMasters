@@ -66,7 +66,10 @@ public class CombatController : MonoBehaviour
         for (int i = 0; i < _activeCharacterAmount; i++)
         {
             playerParentBehaviour.PlayerList[i].gameObject.SetActive(false);
-            Destroy(enemyParentBehaviour.EnemyList[i].gameObject);
+            
+            var destroyEnemy = enemyParentBehaviour.EnemyList[0];
+            enemyParentBehaviour.EnemyList.RemoveAt(0);
+            Destroy(destroyEnemy.gameObject);
         }
         Debug.Log("Level Failed");
     }
