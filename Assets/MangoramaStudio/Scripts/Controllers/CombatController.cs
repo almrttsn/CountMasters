@@ -6,9 +6,11 @@ using UnityEngine;
 public class CombatController : MonoBehaviour
 {
     [SerializeField] private PlayerParentBehaviour _playerParentBehaviour;
+    [SerializeField] private Animator _characterAnimator;
 
     private int _activeCharacterAmount;
     private bool _combatFinished;
+    private EnemyParentBehaviour _currentEnemyParentBehaviour;
 
     private void Start()
     {
@@ -21,6 +23,7 @@ public class CombatController : MonoBehaviour
 
     private void CombatHasBegan(PlayerParentBehaviour playerParentBehaviour, EnemyParentBehaviour enemyParentBehaviour)
     {
+        _currentEnemyParentBehaviour = enemyParentBehaviour;
         Debug.Log("Event arrived");
         playerParentBehaviour.MovementRestricted = true;
         StartCoroutine(CombatTimeCo());
@@ -52,7 +55,7 @@ public class CombatController : MonoBehaviour
             
             var destroyEnemy = enemyParentBehaviour.EnemyList[0];
             enemyParentBehaviour.EnemyList.RemoveAt(0);
-            Destroy(destroyEnemy.gameObject);
+            Destroy(destroyEnemy.gameObject,1f);
             
             Debug.Log("Killing enemy");
         }
@@ -89,8 +92,11 @@ public class CombatController : MonoBehaviour
 
     private IEnumerator CombatTimeCo()
     {
+        _playerParentBehaviour.SetAllCharactersToFightingState();
+        _currentEnemyParentBehaviour.SetAllCharactersToFightingState();
         _playerParentBehaviour.CharacterSpeed = 0;
         yield return new WaitForSeconds(1f);
+        _playerParentBehaviour.SetAllCharactersToRunningState();
         _combatFinished = true;
         _playerParentBehaviour.CharacterSpeed = 5f;
 
