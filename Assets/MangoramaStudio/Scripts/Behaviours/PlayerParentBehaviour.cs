@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerParentBehaviour : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class PlayerParentBehaviour : MonoBehaviour
     [SerializeField] private int _initializePopulateAmount;
     [SerializeField] private float _radiusForFirstQueue;
     [SerializeField] private float _radiusForSecondQueue;
+    [SerializeField] private Image _leftBorder;
+    [SerializeField] private Image _rightBorder;
 
     private List<CharacterBehaviour> _playerList = new List<CharacterBehaviour>();
     private float _playerBarFactor;
@@ -163,32 +166,37 @@ public class PlayerParentBehaviour : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             _firstPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Debug.Log(_firstPosition);
         }
 
         if (Input.GetMouseButton(0))
         {
             _secondPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Debug.Log(_secondPosition);
+
             PlayerSwipeAtClampedAreaProcess();
         }
     }
 
     private void PlayerSwipeAtClampedAreaProcess()
     {
-        if (Mathf.Abs(_firstPosition.x - _secondPosition.x) < 0.01f)
+        if (Mathf.Abs(_secondPosition.z -_firstPosition.z) < 0.01f)
         {
             return;
         }
-        if (_secondPosition.x > _firstPosition.x)
+        if (_secondPosition.z > _firstPosition.z)
         {
-            transform.position += new Vector3(Mathf.Abs(_firstPosition.x - _secondPosition.x) * 500f, 0, 0) * Time.deltaTime;
+            transform.position += new Vector3(Mathf.Abs(_firstPosition.z - _secondPosition.z) * 100f, 0, 0) * Time.deltaTime;
+            Debug.Log("Going Right");
         }
-        else if (_secondPosition.x < _firstPosition.x)
+        else if (_secondPosition.z < _firstPosition.z)
         {
-            transform.position += new Vector3(-Mathf.Abs(_firstPosition.x - _secondPosition.x) * 500f, 0, 0) * Time.deltaTime;
+            transform.position -= new Vector3(Mathf.Abs(_firstPosition.z - _secondPosition.z) * 100f, 0, 0) * Time.deltaTime;
+            Debug.Log("Going Left");
         }
         _firstPosition = _secondPosition;
-        var instantPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        float clampedPos = Mathf.Clamp(instantPosition.x, 1000f, 1000f);
+        var instantPosition = transform.position;
+        float clampedPos = Mathf.Clamp(instantPosition.x, -100f, 100f);
         transform.position = new Vector3(clampedPos, transform.position.y, transform.position.z);
     }
 }
