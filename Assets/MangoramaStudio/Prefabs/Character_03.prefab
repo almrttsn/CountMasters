@@ -1312,7 +1312,7 @@ GameObject:
   - component: {fileID: 6981661483756278145}
   m_Layer: 0
   m_Name: Character_03
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1365,6 +1365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _navMeshAgent: {fileID: 6981661483756278145}
+  _characterAnimator: {fileID: 687520596092568770}
 --- !u!195 &6981661483756278145
 NavMeshAgent:
   m_ObjectHideFlags: 0
