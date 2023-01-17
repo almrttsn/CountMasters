@@ -34,5 +34,13 @@ public class EnemyParentBehaviour : MonoBehaviour
             character.MoveCharactersToTerritory(spawnPos);
             _enemyList.Add(character);
         }
-    }    
+    }
+
+    internal void SetAllCharactersToFightingState()
+    {
+        foreach (var enemy in _enemyList)
+        {
+            enemy.SetFightingState();
+        }
+    }
 }

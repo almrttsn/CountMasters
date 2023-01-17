@@ -21,8 +21,8 @@ public class PlayerParentBehaviour : MonoBehaviour
     [SerializeField] private int _initializePopulateAmount;
     [SerializeField] private float _radiusForFirstQueue;
     [SerializeField] private float _radiusForSecondQueue;
-    [SerializeField] private Image _leftBorder;
-    [SerializeField] private Image _rightBorder;
+    [SerializeField] private CapsuleCollider _playerParentCapsuleCollider;
+    
 
     private List<CharacterBehaviour> _playerList = new List<CharacterBehaviour>();
     private float _playerBarFactor;
@@ -48,6 +48,8 @@ public class PlayerParentBehaviour : MonoBehaviour
     #region PassingGate
     public void PlayerIsPassAGate(int targetPlayerCount)
     {
+        float clampedPlayerCircleFactor = Mathf.Clamp((float)(targetPlayerCount / 10f),0.5f,2f);
+        _playerParentCapsuleCollider.radius = 0.5f + clampedPlayerCircleFactor;
         if (targetPlayerCount > PlayerCharacterAmount)
         {
             Debug.Log("Player Count is " + targetPlayerCount + ("FromPlayerPassAGate"));
@@ -83,7 +85,7 @@ public class PlayerParentBehaviour : MonoBehaviour
     private void ReArrangeCharacterPositions()
     {
         List<CharacterBehaviour> firstCircleCharacters = new List<CharacterBehaviour>();
-        List<CharacterBehaviour> secondCircleCharacters = new List<CharacterBehaviour>();
+        List<CharacterBehaviour> secondCircleCharacters = new List<CharacterBehaviour>();    
         for (int i = 1; i < PlayerCharacterAmount; i++)
         {
             if (firstCircleCharacters.Count < 10)
@@ -97,6 +99,22 @@ public class PlayerParentBehaviour : MonoBehaviour
         }
         SetCharacterPositions(firstCircleCharacters, _radiusForFirstQueue);
         SetCharacterPositions(secondCircleCharacters, _radiusForSecondQueue);
+    }
+
+    internal void SetAllCharactersToRunningState()
+    {
+        foreach (var character in _playerList)
+        {
+            character.SetRunningState();
+        }
+    }
+
+    internal void SetAllCharactersToFightingState()
+    {
+        foreach (var character in _playerList)
+        {
+            character.SetFightingState();
+        }
     }
 
     private void SetCharacterPositions(List<CharacterBehaviour> characterBehaviours, float radius)
@@ -162,7 +180,7 @@ public class PlayerParentBehaviour : MonoBehaviour
         //if (MovementRestricted == false)
         //{
         //}
-        _playerBarFactor = PlayerCharacterAmount / 10f;
+        _playerBarFactor = PlayerCharacterAmount / 100f;
     }
 
     private void Dragged(Vector2 dragVector)
