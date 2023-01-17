@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class CharacterBehaviour : MonoBehaviour
 {
 
     [SerializeField] private NavMeshAgent _navMeshAgent;
+    [SerializeField] private Animator _characterAnimator;
     private Vector3 _spawnPos;
     private bool _isStartedToMove;
     private Transform _playerParentTransform;
@@ -31,5 +33,15 @@ public class CharacterBehaviour : MonoBehaviour
         _playerParentTransform = playerParentTransform;
         _spawnPos = spawnPos;
         _isStartedToMove = true;
+    }
+
+    internal void SetFightingState()
+    {
+        _characterAnimator.SetBool("isAtCombat", true);
+    }
+
+    internal void SetRunningState()
+    {
+        _characterAnimator.SetBool("isAtCombat", false);
     }
 }

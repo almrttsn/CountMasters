@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+    [SerializeField] private Animator _enemyAnimator;
     private bool _isStartedToMove;
     private float _lerpValue;
     private Vector3 _spawnPos;
@@ -22,5 +23,10 @@ public class EnemyBehaviour : MonoBehaviour
     {
         _spawnPos = spawnPos;
         _isStartedToMove = true;
-    }    
+    }
+
+    internal void SetFightingState()
+    {
+        _enemyAnimator.SetBool("isAtCombat", true);
+    }
 }
