@@ -1343,7 +1343,7 @@ Animator:
   m_GameObject: {fileID: 6062245522370020354}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8fbcfc9aa06c2a54296f27a18d9addca, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 329f680659a14124c92362a653d597e9, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1365,7 +1365,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _navMeshAgent: {fileID: 6981661483756278145}
-  _spawnPos: {x: 1, y: 0, z: 0}
 --- !u!195 &6981661483756278145
 NavMeshAgent:
   m_ObjectHideFlags: 0
