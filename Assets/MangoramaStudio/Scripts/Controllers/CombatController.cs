@@ -12,7 +12,7 @@ public class CombatController : MonoBehaviour
     private bool _combatFinished;
     private EnemyParentBehaviour _currentEnemyParentBehaviour;
 
-    private void Start()
+    private void Initialize()
     {
         _playerParentBehaviour.IsCombatBegan += CombatHasBegan;
     }
@@ -75,6 +75,7 @@ public class CombatController : MonoBehaviour
             Destroy(destroyEnemy.gameObject);
         }
         Debug.Log("Level Failed");
+        //level Failed
     }
     #endregion
 

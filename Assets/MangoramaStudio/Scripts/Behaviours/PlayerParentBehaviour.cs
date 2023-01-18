@@ -31,7 +31,7 @@ public class PlayerParentBehaviour : MonoBehaviour
     private Vector3 _populatePosition;
     private EnemyParentBehaviour _encounteredEnemy;
 
-    private void Start()
+    private void Initialize()
     {
         PlayerCharacterAmount = 1;
         _playerList.Add(_firstCharacter);
@@ -172,14 +172,15 @@ public class PlayerParentBehaviour : MonoBehaviour
             _encounteredEnemy = other.GetComponent<EnemyParentBehaviour>();
             IsCombatBegan?.Invoke(this, _encounteredEnemy);
         }
+        else if(other.tag == "LevelEnd")
+        {
+            //level complete
+        }
     }
 
     private void Update()
     {
-        transform.position += new Vector3(0, 0, CharacterSpeed) * Time.deltaTime;
-        //if (MovementRestricted == false)
-        //{
-        //}
+        transform.position += new Vector3(0, 0, CharacterSpeed) * Time.deltaTime;        
         _playerBarFactor = PlayerCharacterAmount / 100f;
     }
 

@@ -13,7 +13,7 @@ public class EnemyParentBehaviour : MonoBehaviour
     private List<EnemyBehaviour> _enemyList = new List<EnemyBehaviour>();    
     private Vector3 _populatePosition;
 
-    private void Start()
+    public void Initialize()
     {
         AddNewPlayers(_enemyCount -1, _populatePosition, 1.5f);
         _enemyList.Add(_enemyCharacter);

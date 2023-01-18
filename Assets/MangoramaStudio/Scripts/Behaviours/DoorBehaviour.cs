@@ -19,7 +19,7 @@ public class DoorBehaviour : MonoBehaviour
     [SerializeField] private TextMesh _doorText;
     private PlayerParentBehaviour _playerBehaviour;
 
-    private void Start()
+    public void Initialize()
     {
         _doorText.text = this.gameObject.name.ToString();
     }
